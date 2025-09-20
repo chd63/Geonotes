@@ -2,7 +2,11 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import "./CountryPage.css"
 import { Link } from 'react-router-dom';
-import Split from 'react-split'
+import GridLayout from 'react-grid-layout';
+import 'react-grid-layout/css/styles.css';
+import 'react-resizable/css/styles.css';
+import { Responsive, WidthProvider } from 'react-grid-layout';
+const ResponsiveGridLayout = WidthProvider(Responsive);
 
 
 function CountryPage() {
@@ -10,6 +14,23 @@ function CountryPage() {
     const collapseThreshold = 10;
     let sizes = [33,34,33];
 
+    const layouts = {
+    lg: [ // Large screens (e.g., desktops)
+        { i: 'general', x: 0, y: 0, w: 4, h: 5 },
+        { i: 'notes', x: 4, y: 0, w: 4, h: 5 },
+        { i: 'social', x: 8, y: 0, w: 4, h: 5 },
+    ],
+    md: [ // Medium screens (e.g., tablets)
+        { i: 'general', x: 0, y: 0, w: 6, h: 10 },
+        { i: 'notes', x: 6, y: 0, w: 6, h: 10 },
+        { i: 'social', x: 0, y: 10, w: 12, h: 10 },
+    ],
+    sm: [ // Small screens (e.g., phones)
+        { i: 'general', x: 0, y: 0, w: 12, h: 10 },
+        { i: 'notes', x: 0, y: 10, w: 12, h: 10 },
+        { i: 'social', x: 0, y: 20, w: 12, h: 10 },
+    ],
+    };
 
     const {countryName} = useParams();
     return(
@@ -22,20 +43,19 @@ function CountryPage() {
 
 
             <div className="main-content-row">
-                <Split
-                sizes={[33, 34, 33]}
-                minSize={1}
-                expandToMin={false}
-                direction="horizontal"
-                className="split-container"
+                <ResponsiveGridLayout
+                    className="main-content-row"
+                    layouts={layouts}
+                    breakpoints={{ lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 }}
+                    cols={{ lg: 12, md: 12, sm: 12, xs: 12, xxs: 12 }}
                 >
-                <div className="general-info-container">
+                <div key="general" className="general-info-container">
                     <div>
                         <h2>Parsed Info</h2>
                     </div>
                 </div>
 
-                <div className="notes-container">
+                <div key="notes" className="notes-container">
                     <div>
                         <h2>Notes</h2>
                     </div>
@@ -43,12 +63,12 @@ function CountryPage() {
                     <button>Submit</button>
                 </div>
 
-                <div className="social-container">
+                <div key="social" className="social-container">
                     <div>
                         <h2>Social</h2>
                     </div>
                 </div>
-                </Split> 
+                </ResponsiveGridLayout>
             </div>
 
                 

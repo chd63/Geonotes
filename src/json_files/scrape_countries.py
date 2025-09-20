@@ -17,6 +17,7 @@
   "vanuatu",
   "antarctica",
   "mali"
+  "dominican rep."
 
 '''
 
