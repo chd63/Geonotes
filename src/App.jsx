@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { use, useState } from "react";
 import "./App.css";
 import {
   ComposableMap,
@@ -6,6 +6,8 @@ import {
   Geography,
   ZoomableGroup
 } from "react-simple-maps";
+import {Routes, Route, useNavigate} from "react-router-dom";
+import CountryPage from "./CountryPage";
 
 import allowedCountries from "./json_files/geoguessr_countries.json"
 
@@ -15,19 +17,26 @@ const geoUrl =
 
 
 
-function handleClick(geo) {
-  //handleZoomIn(geo,setPosition,setSelectedCountry);
-  console.log(geo.properties.name.toLowerCase());
-}
 
-
-function App() {
+function MapView() {
   // TODO: get rid of these later if you dont need them
   const [position, setPosition] = useState({ coordinates: [0, 0], zoom: 1 });
   const [selectedCountry, setSelectedCountry] = useState(null);
   
   const [tooltipContent, setTooltipContent] = useState("");
   const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
+
+
+  const navigate = useNavigate();
+
+  function handleClick(geo) {
+    //handleZoomIn(geo,setPosition,setSelectedCountry);
+    console.log(geo.properties.name.toLowerCase());
+    let  countryName = geo.properties.name.toLowerCase();
+    navigate('/country/' + countryName);
+
+  }
+
 
   return (
     <div className="center-container">
@@ -139,5 +148,21 @@ function App() {
   );
   
 }
+
+// ok so this may be changed in the future but we are moving to make
+// the main page a router, it will return at / the map function 
+// at /country/:countryName the country page
+
+function App() {
+  return(
+    <Routes>
+      <Route path="/" element={<MapView/>}/>
+
+      <Route path="/country/:countryName" element={<CountryPage/>}/>
+    </Routes>
+  )
+}
+
+
 
 export default App;
