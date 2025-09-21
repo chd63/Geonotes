@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import "./CountryPage.css"
 import { Link } from 'react-router-dom';
@@ -11,8 +11,11 @@ const ResponsiveGridLayout = WidthProvider(Responsive);
 
 function CountryPage() {
     // get constants to set state
-    const collapseThreshold = 10;
-    let sizes = [33,34,33];
+    let [isLocked, setIsLocked] = useState(false);
+
+    const handleLockToggle = () => {
+        setIsLocked(!isLocked);
+    }
 
     const layouts = {
     lg: [ // Large screens (e.g., desktops)
@@ -35,9 +38,10 @@ function CountryPage() {
     const {countryName} = useParams();
     return(
         <div className="country-page-container">
-            <div className = "top-header">
+            <div className = "top-header">  
             <Link to="/" className="home_button">Home</Link>
-            <h1 className="header_name">Notes for {countryName} </h1> 
+            <button onClick={handleLockToggle}>{isLocked ? 'Unlock Layout' : 'Lock Layout'}</button> 
+            <h1 className="header_name">Notes for {countryName} </h1>
             <Link to="/" className="login_button">Log In</Link>              
             </div>  
 
@@ -48,6 +52,8 @@ function CountryPage() {
                     layouts={layouts}
                     breakpoints={{ lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 }}
                     cols={{ lg: 12, md: 12, sm: 12, xs: 12, xxs: 12 }}
+                    isDraggable={!isLocked}
+                    isResizable={!isLocked}
                 >
                 <div key="general" className="general-info-container">
                     <div>
