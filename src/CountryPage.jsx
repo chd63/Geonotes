@@ -65,7 +65,18 @@ function CountryPage() {
     };
 
     const resetToDefault = () => {
-        setCurrentLayout(defaultLayouts.lg);
+
+        const width = containerRef.current?.offsetWidth || window.innerWidth;
+        let newLayout;
+        if (width >= 1200) {
+            newLayout = defaultLayouts.lg;
+        } else if (width >= 768) {
+            newLayout = defaultLayouts.md;
+        } else {
+            newLayout = defaultLayouts.sm;
+        }
+
+        setCurrentLayout(newLayout);
         setUserLayout(null);
         localStorage.removeItem('savedLayout');
         setIsLocked(true);
@@ -109,7 +120,7 @@ function CountryPage() {
                 ) : (
                     <ResponsiveGridLayout
                         className="main-content-row"
-                        layouts={defaultLayouts}
+                        layouts={{ lg: currentLayout }}
                         breakpoints={{ lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 }}
                         cols={{ lg: 12, md: 12, sm: 12, xs: 12, xxs: 12 }}
                         isDraggable={true}
@@ -119,15 +130,21 @@ function CountryPage() {
                         <div key="general" className="general-info-container">
                             <h2>Parsed Info</h2>
                             <p className="reminder-text">
-                                *remember that when in unlocked mode you can not interact with the modules please
-                                lock if you would like to interact with the modules
+                                *modules will most likely look the best in default configurations
+                            </p>
+                            <p className="reminder-text">
+                                *remember please lock before you use the modules, issues may arise, and you have to
+                                deal with an annoying highlight
                             </p>
                         </div>
                         <div key="notes" className="notes-container">
                             <h2>Notes</h2>
                             <p className="reminder-text">
-                                *remember that when in unlocked mode you can not interact with the modules please
-                                lock if you would like to interact with the modules
+                                *modules will most likely look the best in default configurations
+                            </p>
+                            <p className="reminder-text">
+                                *remember please lock before you use the modules, issues may arise, and you have to
+                                deal with an annoying highlight
                             </p>
                             <textarea className="notes-textarea" placeholder="write something ..." />
                             <button>Submit</button>
@@ -135,8 +152,11 @@ function CountryPage() {
                         <div key="social" className="social-container">
                             <h2>Social</h2>
                             <p className="reminder-text">
-                                *remember that when in unlocked mode you can not interact with the modules please
-                                lock if you would like to interact with the modules
+                                *modules will most likely look the best in default configurations
+                            </p>
+                            <p className="reminder-text">
+                                *remember please lock before you use the modules, issues may arise, and you have to
+                                deal with an annoying highlight
                             </p>
                         </div>
                     </ResponsiveGridLayout>
