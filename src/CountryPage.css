@@ -67,3 +67,8 @@ body,html {
     justify-content: center;
 
 }
+
+.reminder-text {
+    color: red;
+    font-weight: bold; 
+}
