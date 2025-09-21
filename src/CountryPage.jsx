@@ -32,6 +32,9 @@ function CountryPage() {
     const [userLayout, setUserLayout] = useState(null);
     const containerRef = useRef(null);
     const [containerWidth, setContainerWidth] = useState(1200);
+    const [notes, setNotes] = useState([]);
+    const [newNote, setNewNote] = useState("");
+    const [newNoteImages, setNewNoteImages] = useState([]);
 
     // Load saved layout from localStorage on mount
     useEffect(() => {
@@ -82,6 +85,32 @@ function CountryPage() {
         setIsLocked(true);
     };
 
+    const handlePaste = (e) => {
+        const items = e.clipboardData.items;
+        for (let i = 0; i < items.length; i++) {
+            if (items[i].type.indexOf("image") !== -1) {
+                const blob = items[i].getAsFile();
+                const imgURL = URL.createObjectURL(blob);
+                setNewNoteImages((prev) => [...prev, imgURL]);
+            }
+        }
+    };
+
+    const addNote = () => {
+        if (newNote.trim() === "" && newNoteImages.length === 0) return;
+
+        const note = {
+            id: Date.now(),
+            text: newNote,
+            images: newNoteImages,
+        };
+
+        setNotes((prev) => [...prev, note]);
+        setNewNote("");
+        setNewNoteImages([]);
+    };
+
+
     return (
         <div className="country-page-container">
             <div className="top-header">
@@ -110,8 +139,32 @@ function CountryPage() {
                         </div>
                         <div key="notes" className="notes-container">
                             <h2>Notes</h2>
-                            <textarea className="notes-textarea" placeholder="write something ..." />
-                            <button>Submit</button>
+                            <button onClick={addNote}>Submit</button>
+
+                            <textarea 
+                                className="notes-textarea" 
+                                placeholder="write something and/or paste an image ..."
+                                value={newNote}
+                                onChange= {(e) => setNewNote(e.target.value)}
+                                onPaste={handlePaste}
+                            />
+
+                            <div className="note-preview-images">
+                                {newNoteImages.map((img, idx) => (
+                                    <img key={idx} src={img} alt="preview" className="note-image-preview" />
+                                ))}
+                            </div>
+
+                            <div className="notes-list">
+                            {notes.map((note) => (
+                                <div key={note.id} className="note-item">
+                                    {note.text && <p>{note.text}</p>}
+                                    {note.images && note.images.map((img, idx) => (
+                                        <img key={idx} src={img} alt="note" className="note-image" />
+                                    ))}
+                                </div>
+                                ))}
+                            </div>
                         </div>
                         <div key="social" className="social-container">
                             <h2>Social</h2>

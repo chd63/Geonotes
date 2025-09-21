@@ -15,7 +15,7 @@ body,html {
 .country-page-container{
     display: flex;
     height: 100vh;
-    width: 100vw;
+    width: 99vw;
     flex-direction: column;
     text-align: center;
     border-top: 1px solid transparent;
@@ -29,8 +29,11 @@ body,html {
 .general-info-container, .notes-container, .social-container {
   border: 1px solid gray;
   box-sizing: border-box;
-  overflow: hidden;
-  /* transition: all 0.3s ease; /* smooth collapse/expand */
+    overflow-y: auto;   
+    overflow-x: hidden; 
+    height: 100%;       
+    padding-right: 4px; /* optional: space for scrollbar */
+  
 }
 
 
@@ -71,4 +74,28 @@ body,html {
 .reminder-text {
     color: red;
     font-weight: bold; 
+}
+
+.notes-textarea{
+    width: 90%;
+    height: 10%;
+}
+.notes-list {
+    margin-top: 10px;
+}
+.note-item {
+    background: #f2f2f2;
+    padding: 8px;
+    margin-bottom: 5px;
+    border-radius: 4px;
+}
+
+.note-item img,
+.note-image-preview {
+    max-width: 100%;   /* scale down to fit the container */
+    height: auto;      /* keep aspect ratio */
+    display: block;
+    margin: 8px 0;
+    border-radius: 6px;
+    object-fit: contain; /* prevents stretching */
 }
