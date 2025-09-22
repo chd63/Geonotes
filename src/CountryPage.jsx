@@ -110,6 +110,10 @@ function CountryPage() {
         setNewNoteImages([]);
     };
 
+    const deleteNote = (id) => {
+        setNotes((prev) => prev.filter((note) => note.id !== id));
+    };
+
 
     return (
         <div className="country-page-container">
@@ -162,6 +166,12 @@ function CountryPage() {
                                     {note.images && note.images.map((img, idx) => (
                                         <img key={idx} src={img} alt="note" className="note-image" />
                                     ))}
+                                    <button 
+                                        className="delete-note-btn"
+                                        onClick={() => deleteNote(note.id)}
+                                    >
+                                        Delete
+                                    </button>
                                 </div>
                                 ))}
                             </div>
